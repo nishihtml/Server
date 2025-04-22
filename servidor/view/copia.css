@@ -1,0 +1,94 @@
+body{background-color: lightgray;}
+
+.caixa1{border: solid darkblue;
+        background-color: bisque;
+        height: 200px;
+        font-size: 40px;
+        color: darkgreen;
+        text-align: center;}
+
+.caixa2{border: solid bisque;
+        background-color: bisque;
+        height: 200px;
+        font-size: 15pt;
+        font-family: Comic Sans MS, cursive ;
+        text-align: center;
+        position: relative;
+        display:flex;
+        justify-content: center;}
+
+.texto2{align-self: center;
+        justify-content: center;}
+
+.c {position: absolute;
+        left: 20px;
+        top: 20px;}
+
+.java{position: absolute;
+        right: 20px;
+        top: 20px;}
+
+.html{position: absolute;
+        left: 20px;
+        bottom: 20px;
+        display: flex;
+        align-items: flex-end;}
+
+.css{position: absolute;
+        right: 20px;
+        bottom: 20px;
+        display: flex;
+        align-items: flex-end;}
+
+.inline{border: solid lightskyblue;
+        background-color: lightskyblue;
+        height: 30px;}
+
+#menu{padding: 75px;
+        position: relative;
+        display: inline;
+        color: darkred;
+        align-self: center;}
+
+.introducao{font-size: 20pt;
+        color: indigo;}
+
+.livros{display: inline;
+        position: relative;
+        padding-left: 50px;
+        padding-right: 50px;}
+
+.titulo{font-size: 30px;
+        color: black;}
+
+.principal{font-size: 60px;
+        color: darkgreen;}
+
+.amarelo{border: solid yellow;
+        background-color: yellow;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        width: 600px;
+        text-align: left;}
+
+table{  top: -30px;
+        margin-left: auto;
+        margin-right: auto;
+        border: 2px dashed red;
+        position: relative;}
+
+tr, td , th{padding: 10px;
+        border: 2px solid red;}
+
+iframe{padding-left: 50px;
+        padding-right: 50px;}
+
+a{color: darkred;}
+
+.link{text-align: center;}
+
+html{display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;}
