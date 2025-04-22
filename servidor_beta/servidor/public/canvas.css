@@ -1,0 +1,23 @@
+body{
+    background-color: rgb(255, 231, 179);
+}
+
+h1{
+    color: rgb(255, 0, 85);
+    font-size: xx-large;
+}
+
+html{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#canvas1{
+    background-color: white;
+}
+
+#canvas2{
+    background-color: aquamarine;
+}
