@@ -13,9 +13,6 @@ app.use(bodyParser.json())
 app.set('view engine', 'ejs')
 app.set('views', './views');
 
-// Métodos e actions
-
-
 app.post("/cadastrar", function(requisicao, resposta){
     let nome = requisicao.body.nome;
     let login = requisicao.body.login;
