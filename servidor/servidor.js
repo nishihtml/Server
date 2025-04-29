@@ -15,14 +15,6 @@ app.set('views', './views');
 
 // Métodos e actions
 
-app.get("/cadastrar", function(requisicao, resposta){
-    let nome = requisicao.query.nome;
-    let login = requisicao.query.login;
-    let senha = requisicao.query.senha;
-    let nasc = requisicao.query.nascimento;
-
-    console.log(nome, login, senha, nasc)
-})
 
 app.post("/cadastrar", function(requisicao, resposta){
     let nome = requisicao.body.nome;
@@ -34,21 +26,9 @@ app.post("/cadastrar", function(requisicao, resposta){
 })
 
 app.get("/login", function(requisicao, resposta){
-    let log_nome = requisicao.query.nome;
-    let log_login = requisicao.query.login;
-    let log_senha = requisicao.query.senha;
-    let log_nasc = requisicao.query.nascimento;
-    if(log_nome == nome && log_login == login && log_senha == senha && log_nasc == nasc)
-        {resposta.redirect("projetos.html")}
-    else{window.alert("Tenta de novo")}
-})
-
-app.post("/login", function(requisicao, resposta){
-    let log_nome = requisicao.body.nome;
-    let log_login = requisicao.body.login;
-    let log_senha = requisicao.body.senha;
-    let log_nasc = requisicao.body.nascimento;
-    if(log_nome == nome && log_login == login && log_senha == senha && log_nasc == nasc)
-        {resposta.redirect("projetos.html")}
-    else{window.alert("Tenta de novo")}
+    nome = requisicao.query.nome;
+    login = requisicao.query.login;
+    senha = requisicao.query.senha;
+    nasc = requisicao.query.nascimento;
+    resposta.render("resposta",{nome, login, senha, nasc});
 })
