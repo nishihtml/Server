@@ -1,4 +1,4 @@
-body{
+body {
     background-color: rgb(201, 255, 158);
 }
 
@@ -14,11 +14,10 @@ html{
     text-align: center;
 }
 
-div{
+#post{
     border: 2px solid crimson;
-    background-color: aquamarine;
+    background-color: rgb(238, 255, 227);
     padding: 10px;
     border-radius: 25px;
     text-align: left;
-  }
-  
+}

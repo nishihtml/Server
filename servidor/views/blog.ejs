@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Blog<title>
-        <meta charset="UTF-8">
+        <title>Blog</title>
+        <meta charset="utf-8">
         <link href="blog.css" rel="stylesheet">
     </head>
     <body>
-        <input type="button" value="Criar Post" onclick="resp()" id="criar_post">
         <h1>Twitter so que não</h1>
-        <div>
-            <p>Titulo: <%= titulo %> </p>
-            <p>Resumo: <%= resumo %></p>
-            <p>Conteudo: <%= conteudo %></p>
-        </div>
+
+        <br>
+
+        <p id="novo"><a href="cadastrar_post.html">Criar Post</a></p>
+
+        <br>
+        
+
+        <% for (var i = 1; i <= cursor.lenght;  i++ ) { %>
+            <div id="post">
+                <p>Titulo: <%= titulo %> </p>
+                <p>Resumo: <%= resumo %> </p>
+                <p>Conteudo: <%= conteudo %> </p>
+            </div>
+            <br>
+        <% } %>
+         
+
         <script src="blog.js" type="text/javascript"></script>
     </body>
 </html>

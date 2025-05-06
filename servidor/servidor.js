@@ -15,7 +15,7 @@ app.set('views', './views');
 
 var mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
-const uri = `mongodb+srv://gustavoyurinishi:AArnls6hzbdoeg94@helloworld.waodpqp.mongodb.net/?retryWrites=true&w=majority&appName=helloworld`;
+const uri = `mongodb+srv://gustavoyurinishi:zLaWdI0u0NI0haLK@helloworld.waodpqp.mongodb.net/?retryWrites=true&w=majority&appName=helloworld`;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 var dbo = client.db("helloworld")
 var usuarios = dbo.collection("usuarios")
@@ -30,6 +30,32 @@ app.get("/cadastrar", function(requisicao, resposta){
 })
 
 app.post("/cadastrar", function(requisicao, resposta){
+    nome = requisicao.body.nome;
+    login = requisicao.body.login;
+    senha = requisicao.body.senha;
+    nasc = requisicao.body.nascimento;
+    console.log(nome, login, senha, nasc);
+
+    var data = { db_nome: nome, db_login: login, db_senha: senha, db_nasc: nasc };
+
+    usuarios.insertOne(data, function(err){
+        if(err){
+            resposta.render("resposta",{status: "Erro" ,nome, login, senha, nasc});
+        }else{
+            resposta.render("resposta",{status: "Sucesso", nome, login, senha, nasc});
+        }
+    })
+})
+
+app.get("/login", function(requisicao, resposta){
+    nome = requisicao.query.nome;
+    login = requisicao.query.login;
+    senha = requisicao.query.senha;
+    nasc = requisicao.query.nascimento;
+    resposta.render("resposta",{nome, login, senha, nasc})
+})
+
+app.post("/login", function(requisicao, resposta){
     let nome = requisicao.body.nome;
     let login = requisicao.body.login;
     let senha = requisicao.body.senha;
@@ -47,35 +73,38 @@ app.post("/cadastrar", function(requisicao, resposta){
     })
 })
 
-app.post("/login", function(requisicao, resposta){
-    nome = requisicao.query.nome;
-    login = requisicao.query.login;
-    senha = requisicao.query.senha;
-    nasc = requisicao.query.nascimento;
-    resposta.render("resposta",{nome, login, senha, nasc})
-})
+////LAB 09
 
 app.get("/cadastrar_post", function(req, resp){
-    titulo = req.query.titulo;
-    resumo = req.query.resumo;
-    conteudo = req.query.conteudo
+    let titulo = req.query.titulo;
+    let resumo = req.query.resumo;
+    let conteudo = req.query.conteudo
+    resp.render("blog",{titulo, resumo, conteudo});
+})
 
-    resp.render("resp",{titulo, resumo, conteudo});
+app.get("/listar", function(req, resp){
+    usuarios.find().toArray(function(err, users){
+        if (err){
+            resp.status(500).json({erro:"erro"})
+        }
+        else{
+            resp.json(users)
+        }
+    });
 })
 
 app.post("/cadastrar_post", function(req, resp){
-    titulo = req.body.titulo;
-    resumo = req.body.resumo;
-    conteudo = req.body.conteudo;
-    resp.render("resp",{titulo, resumo, conteudo});
+    let titulo = req.body.titulo;
+    let resumo = req.body.resumo;
+    let conteudo = req.body.conteudo;
 
-    var data = { db_titulo: req.body.titulo, db_resumo: req.body.resumo, db_conteudo: req.body.conteudo };
+    var data = { db_titulo: titulo, db_resumo: resumo, db_conteudo: conteudo};
 
     usuarios.insertOne(data, function (err){
         if (err) {
-            resp.render('resposta_post', {blog: "Erro ao cadastrar o post :("})
+            resp.render('blog', {resp: "Erro ao cadastrar o post :(", titulo, resumo, conteudo, })
         }else {
-            resp.render('resposta_post', {blog: "Post cadastrado com sucesso :D"})        
+            resp.render('blog', {resp: "Post cadastrado com sucesso :D", titulo, resumo, conteudo, })        
         };
     });
 })
