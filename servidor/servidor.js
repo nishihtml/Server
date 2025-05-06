@@ -22,7 +22,7 @@ app.post("/cadastrar", function(requisicao, resposta){
     resposta.render("resposta",{nome, login, senha, nasc});
 })
 
-app.get("/login", function(requisicao, resposta){
+app.post("/login", function(requisicao, resposta){
     nome = requisicao.query.nome;
     login = requisicao.query.login;
     senha = requisicao.query.senha;
