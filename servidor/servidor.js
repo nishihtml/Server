@@ -15,7 +15,7 @@ app.set('views', './views');
 
 var mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
-const uri = `mongodb+srv://gustavoyurinishi:AArnls6hzbdoeg94@helloworld.waodpqp.mongodb.net/?retryWrites=true&w=majority&appName=helloworld`;
+const uri = `mongodb+srv://gustavoyurinishi:@helloworld.waodpqp.mongodb.net/?retryWrites=true&w=majority&appName=helloworld`;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 var dbo = client.db("helloworld")
 var usuarios = dbo.collection("usuarios")
