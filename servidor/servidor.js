@@ -71,7 +71,7 @@ app.post("/cadastrar_post", function(req, resp){
 
     var data = { db_titulo: req.body.titulo, db_resumo: req.body.resumo, db_conteudo: req.body.conteudo };
 
-    usuarios.insertOne(data, function (err) {
+    usuarios.insertOne(data, function (err){
         if (err) {
             resp.render('resposta_post', {blog: "Erro ao cadastrar o post :("})
         }else {
