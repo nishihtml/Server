@@ -1,0 +1,24 @@
+body{
+    background-color: rgb(201, 255, 158);
+}
+
+h1{
+    font-size: xx-large;
+    color: crimson;
+}
+
+html{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+div{
+    border: 2px solid crimson;
+    background-color: aquamarine;
+    padding: 10px;
+    border-radius: 25px;
+    text-align: left;
+  }
+  
