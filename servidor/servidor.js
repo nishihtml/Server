@@ -13,27 +13,35 @@ app.use(bodyParser.json())
 app.set('view engine', 'ejs')
 app.set('views', './views');
 
+app.get('/', (req, res) =>{
+    res.redirect("public/projetos.html")
+})
+
 var mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
+
 const uri = `mongodb+srv://gustavoyurinishi:@helloworld.waodpqp.mongodb.net/?retryWrites=true&w=majority&appName=helloworld`;
+
+
 const client = new MongoClient(uri, { useNewUrlParser: true });
 var dbo = client.db("helloworld")
 var usuarios = dbo.collection("usuarios")
+var posts = dbo.collection("posts")
 
 app.get("/cadastrar", function(requisicao, resposta){
+    let nome = requisicao.query.nome;
+    let login = requisicao.query.login;
+    let senha = requisicao.query.senha;
+    let nasc = requisicao.query.nascimento;
+
+    console.log(nome, login, senha, nasc)
+})
+
+app.post("/cadastrar", function(requisicao, resposta){
     let nome = requisicao.body.nome;
     let login = requisicao.body.login;
     let senha = requisicao.body.senha;
     let nasc = requisicao.body.nascimento;
-    console.log(nome, login, senha, nasc);
-    resposta.render("resposta",{nome, login, senha, nasc});
-})
-
-app.post("/cadastrar", function(requisicao, resposta){
-    nome = requisicao.body.nome;
-    login = requisicao.body.login;
-    senha = requisicao.body.senha;
-    nasc = requisicao.body.nascimento;
     console.log(nome, login, senha, nasc);
 
     var data = { db_nome: nome, db_login: login, db_senha: senha, db_nasc: nasc };
@@ -47,7 +55,7 @@ app.post("/cadastrar", function(requisicao, resposta){
     })
 })
 
-app.get("/login", function(requisicao, resposta){
+app.get("/logar", function(requisicao, resposta){
     nome = requisicao.query.nome;
     login = requisicao.query.login;
     senha = requisicao.query.senha;
@@ -55,56 +63,50 @@ app.get("/login", function(requisicao, resposta){
     resposta.render("resposta",{nome, login, senha, nasc})
 })
 
-app.post("/login", function(requisicao, resposta){
+app.post('/logar', function(requisicao, resposta){
     let nome = requisicao.body.nome;
     let login = requisicao.body.login;
     let senha = requisicao.body.senha;
-    let nasc = requisicao.body.nascimento;
+    let nasc = requisicao.body.nasc;
     console.log(nome, login, senha, nasc);
 
-    var data = { db_nome: nome, db_login: login, db_senha: senha, db_nasc: nasc };
+    var data = { db_nome: nome, db_login: login, db_senha: senha, db_nasc: nasc }
 
-    usuarios.insertOne(data, function(err){
-        if(err){
-            resposta.render("resposta",{status: "Erro" ,nome, login, senha, nasc});
+    usuarios.find(data).toArray(function(err, items){
+        console.log(items)
+        if(items.length == 0){
+            resposta.render("resposta_login",{status: "usuario/senha não encontrado"});
+        }else if(err){
+            resposta.render("resposta_login",{status: "erro ao logar"});
         }else{
-            resposta.render("resposta",{status: "Sucesso", nome, login, senha, nasc});
+            resposta.render("resposta_login",{status: "usuario "+login+" logado"});
         }
     })
+
 })
 
 ////LAB 09
 
-app.get("/cadastrar_post", function(req, resp){
-    let titulo = req.query.titulo;
-    let resumo = req.query.resumo;
-    let conteudo = req.query.conteudo
-    resp.render("blog",{titulo, resumo, conteudo});
-})
-
-app.get("/listar", function(req, resp){
-    usuarios.find().toArray(function(err, users){
-        if (err){
-            resp.status(500).json({erro:"erro"})
-        }
-        else{
-            resp.json(users)
-        }
-    });
-})
-
 app.post("/cadastrar_post", function(req, resp){
-    let titulo = req.body.titulo;
-    let resumo = req.body.resumo;
-    let conteudo = req.body.conteudo;
 
-    var data = { db_titulo: titulo, db_resumo: resumo, db_conteudo: conteudo};
+    let data = { db_titulo: req.body.titulo, db_resumo: req.body.resumo, db_conteudo: req.body.conteudo };
 
-    usuarios.insertOne(data, function (err){
-        if (err) {
-            resp.render('blog', {resp: "Erro ao cadastrar o post :(", titulo, resumo, conteudo, })
+    posts.insertOne(data, function(err, items) {
+        console.log(items);
+        if (items.length == 0) {
+          resp.render('blog.ejs')
         }else {
-            resp.render('blog', {resp: "Post cadastrado com sucesso :D", titulo, resumo, conteudo, })        
+          resp.render('blog.ejs')        
         };
-    });
+      });
 })
+
+app.get("/listar_posts", function(req, resp) {
+
+    // busca todos os usuarios no banco de dados
+    posts.find().toArray(function(err, items) {
+        // renderiza a resposta para o navegador
+        resp.render("blog.ejs", { posts: items });
+      });
+
+});
