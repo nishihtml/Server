@@ -168,97 +168,82 @@ app.post('/logar_usuario', function(requisicao, resposta){
 })
 
 app.get("/cadastrar_carro", function(requisicao, resposta){
-    let marca = requisicao.query.nome;
-    let modelo = requisicao.query.login;
-    let ano = requisicao.query.senha;
-    let qtd_disponivel = requisicao.query.nascimento;
+    let marca = requisicao.query.marca;
+    let modelo = requisicao.query.modelo;
+    let ano = requisicao.query.ano;
+    let qtd_disponivel = requisicao.query.qtd_disponivel;
 
-    console.log(nome, login, senha, nasc)
+    console.log(marca, modelo, ano, qtd_disponivel)
 })
 
-app.post("/cadastrar", function(requisicao, resposta){
-    let nome = requisicao.body.nome;
-    let login = requisicao.body.login;
-    let senha = requisicao.body.senha;
-    let nasc = requisicao.body.nascimento;
-    console.log(nome, login, senha, nasc);
+app.post("/cadastrar_carro", function(requisicao, resposta){
+    let marca = requisicao.body.marca;
+    let modelo = requisicao.body.modelo;
+    let ano = requisicao.body.ano;
+    let qtd_disponivel = requisicao.body.qtd_disponivel;
+    console.log(marca, modelo, ano, qtd_disponivel);
 
-    var data = { db_nome: nome, db_login: login, db_senha: senha, db_nasc: nasc };
+    var data = { db_marca: marca, db_modelo: modelo, db_ano: ano, db_qtd_disponivel: qtd_disponivel };
 
-    usuarios.insertOne(data, function(err){
+    carros.insertOne(data, function(err){
         if(err){
-            resposta.render("resposta",{status: "Erro" ,nome, login, senha, nasc});
+            resposta.render("resposta",{status: "Erro" , marca, modelo, ano, qtd_disponivel});
         }else{
-            resposta.render("resposta",{status: "Sucesso", nome, login, senha, nasc});
+            resposta.render("resposta",{status: "Sucesso", marca, modelo, ano, qtd_disponivel});
         }
     })
 })
 
-app.get("/for_ejs",function(requisicao, resposta){
-    let valor = requisicao.query.valor;
-    resposta.render("exemplo_for",{valor});
-})
+app.post('/atualizar_carro', function(requisicao, resposta){
+    let marca = requisicao.body.marca;
+    let modelo = requisicao.body.modelo;
+    let ano = requisicao.body.ano;
+    let qtd_disponivel = requisicao.body.qtd_disponivel;
 
-app.post('/logar', function(requisicao, resposta){
-    let login = requisicao.body.login;
-    let senha = requisicao.body.senha;
-    console.log(login, senha);
+    let data = { db_marca: marca, db_modelo: modelo, db_ano: ano, db_qtd_disponivel: qtd_disponivel }
+    let new_data = { $set: {db_marca: marca, db_modelo: modelo, db_ano: ano, db_qtd_disponivel: qtd_disponivel}}
 
-    var data = {db_login: login, db_senha: senha}
-
-    usuarios.find(data).toArray(function(err, items){
-        console.log(items)
-        if(items.length == 0){
-            resposta.render("resposta_login",{status: "usuario/senha não encontrado"});
-        }else if(err){
-            resposta.render("resposta_login",{status: "erro ao logar"});
-        }else{
-            resposta.render("resposta_login",{status: "usuario "+login+" logado"});
-        }
-    })
-
-})
-
-
-app.post('/atualizar_senha', function(requisicao, resposta){
-    let login = requisicao.body.login;
-    let senha = requisicao.body.senha;
-    let novasenha = requisicao.body.novasenha;
-
-    let data = { db_login: login, db_senha: senha }
-    let new_data = { $set: {db_senha: novasenha}}
-
-    usuarios.updateOne(data, new_data, function(err, result){
+    carros.updateOne(data, new_data, function(err, result){
         console.log(result);
     
         if (result.modifiedCount == 0) {
-            resposta.render('resposta_login', {status: "Usuário/senha não encontrado!"})
+            resposta.render('resposta_login', {status: "Carro não encontrado!"})
         }else if (err) {
-            resposta.render('resposta_login', {status: "Erro ao atualizar usuário!"})
+            resposta.render('resposta_login', {status: "Erro ao atualizar Carro!"})
         }else {
-            resposta.render('resposta_login', {status: "Usuário atualizado com sucesso!"})        
+            resposta.render('resposta_login', {status: "Carro atualizado com sucesso!"})        
         };
     })
 
 })
 
 
+app.post('/remover_carro', function(requisicao, resposta){
+    let marca = requisicao.body.marca;
+    let modelo = requisicao.body.modelo;
+    let ano = requisicao.body.ano;
 
-app.post('/remover_usuario', function(requisicao, resposta){
-    let login = requisicao.body.login;
-    let senha = requisicao.body.senha;
-
-    let data = { db_login: login, db_senha: senha }
+    let data = { db_marca: marca, db_modelo: modelo, db_ano: ano }
 
     usuarios.deleteOne(data, function(err, result){
         console.log(result);
 
           if (result.deletedCount == 0) {
-            resposta.render('resposta_login', {status: "Usuário/senha não encontrado!"})
+            resposta.render('resposta_login', {status: "Carro não encontrado!"})
           }else if (err) {
-            resposta.render('resposta_login', {status: "Erro ao remover usuário!"})
+            resposta.render('resposta_login', {status: "Erro ao remover carro!"})
           }else {
-            resposta.render('resposta_login', {status: "Usuário removido com sucesso!"})        
+            resposta.render('resposta_login', {status: "Carro removido com sucesso!"})        
           };
     })
 })
+
+app.get("/listar_carros", function(req, resp) {
+
+    // busca todos os usuarios no banco de dados
+    carros.find().toArray(function(err, items) {
+        // renderiza a resposta para o navegador
+        resp.render("lista_carros.ejs", { carros: items });
+      });
+
+});
