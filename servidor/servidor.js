@@ -20,7 +20,7 @@ app.get('/', (req, res) =>{
 var mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
 
-const uri = `mongodb+srv://gustavoyurinishi:@helloworld.waodpqp.mongodb.net/?retryWrites=true&w=majority&appName=helloworld`;
+const uri = `mongodb+srv://gustavoyurinishi:hXhvoupXNdKlYPM7@helloworld.waodpqp.mongodb.net/?retryWrites=true&w=majority&appName=helloworld`;
 
 
 const client = new MongoClient(uri, { useNewUrlParser: true });
@@ -116,53 +116,53 @@ app.get("/listar_posts", function(req, resp) {
 //////LAB 10
 
 app.get("/cadastrar_usuario", function(requisicao, resposta){
-    let nome = requisicao.query.nome;
-    let login = requisicao.query.login;
-    let senha = requisicao.query.senha;
+    let cliente_nome = requisicao.query.cliente_nome;
+    let cliente_login = requisicao.query.cliente_login;
+    let cliente_senha = requisicao.query.cliente_senha;
 
-    console.log(nome, login, senha)
+    console.log(cliente_nome, cliente_login, cliente_senha)
 })
 
-app.post("/cadastrar _usuario", function(requisicao, resposta){
-    let nome = requisicao.body.nome;
-    let login = requisicao.body.login;
-    let senha = requisicao.body.senha;
-    console.log(nome, login, senha);
+app.post("/cadastrar_usuario", function(requisicao, resposta){
+    let cliente_nome = requisicao.body.cliente_nome;
+    let cliente_login = requisicao.body.cliente_login;
+    let cliente_senha = requisicao.body.cliente_senha;
+    console.log(cliente_nome, cliente_login, cliente_senha);
 
-    var data = { db_nome: nome, db_login: login, db_senha: senha,};
+    var data = { db_nome: cliente_nome, db_login: cliente_login, db_senha: cliente_senha,};
 
     clientes.insertOne(data, function(err){
         if(err){
-            resposta.render("resposta",{status: "Erro" ,nome, login, senha});
+            resposta.render("resposta_cadastro",{resposta: "Erro" ,cliente_nome, cliente_login, cliente_senha});
         }else{
-            resposta.render("resposta",{status: "Sucesso", nome, login, senha});
+            resposta.render("resposta_cadastro",{resposta: "Sucesso", cliente_nome, cliente_login, cliente_senha});
         }
     })
 })
 
 app.get("/logar_usuario", function(requisicao, resposta){
-    let nome = requisicao.query.nome;
-    let login = requisicao.query.login;
-    let senha = requisicao.query.senha;
-    resposta.render("resposta",{nome, login, senha})
+    let cliente_nome = requisicao.query.cliente_nome;
+    let cliente_login = requisicao.query.cliente_login;
+    let cliente_senha = requisicao.query.cliente_senha;
+    resposta.render("resposta_login",{cliente_nome, cliente_login, cliente_senha})
 })
 
 app.post('/logar_usuario', function(requisicao, resposta){
-    let nome = requisicao.body.nome;
-    let login = requisicao.body.login;
-    let senha = requisicao.body.senha;  
-    console.log(nome, login, senha);
+    let cliente_nome = requisicao.body.cliente_nome;
+    let cliente_login = requisicao.body.cliente_login;
+    let cliente_senha = requisicao.body.cliente_senha;  
+    console.log(cliente_nome, cliente_login, cliente_senha);
 
-    var data = { db_nome: nome, db_login: login, db_senha: senha,}
+    var data = { db_nome: cliente_nome, db_login: cliente_login, db_senha: cliente_senha,}
 
     clientes.find(data).toArray(function(err, items){
         console.log(items)
         if(items.length == 0){
-            resposta.render("resposta_login",{status: "usuario/senha não encontrado"});
+            resposta.render("resposta_login",{reply: "usuario/senha não encontrado"});
         }else if(err){
-            resposta.render("resposta_login",{status: "erro ao logar"});
+            resposta.render("resposta_login",{reply: "erro ao logar"});
         }else{
-            resposta.render("resposta_login",{status: "usuario "+login+" logado"});
+            resposta.render("resposta_login",{reply: "usuario logado"});
         }
     })
 })
